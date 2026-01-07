@@ -1,37 +1,29 @@
 /* See LICENSE file for copyright and license details. */
-#include <errno.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include <cerrno>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include "util.hpp"
 
-void
-die(const char *fmt, ...)
-{
-	va_list ap;
-	int saved_errno;
+void die(const char* fmt, ...) {
+	int savedErrno{ errno };
 
-	saved_errno = errno;
-
-	va_start(ap, fmt);
-	vfprintf(stderr, fmt, ap);
-	va_end(ap);
+    std::va_list ap;
+    std::va_start(ap, fmt);
+    std::vfprintf(stderr, fmt, ap);
+    std::va_end(ap);
 
 	if (fmt[0] && fmt[strlen(fmt)-1] == ':')
-		fprintf(stderr, " %s", strerror(saved_errno));
-	fputc('\n', stderr);
+		std::fprintf(stderr, " %s", strerror(savedErrno));
+    std::fputc('\n', stderr);
 
-	exit(1);
+    std::exit(1);
 }
 
-void *
-ecalloc(size_t nmemb, size_t size)
-{
-	void *p;
-
-	if (!(p = calloc(nmemb, size)))
+void* ecalloc(size_t nmemb, size_t size) {
+	void* p = calloc(nmemb, size);
+	if (p == nullptr)
 		die("calloc:");
 	return p;
 }
