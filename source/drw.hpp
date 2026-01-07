@@ -6,11 +6,11 @@ typedef struct {
 } Cur;
 
 typedef struct Fnt {
-	Display *dpy;
+	Display* dpy;
 	unsigned int h;
-	XftFont *xfont;
-	FcPattern *pattern;
-	struct Fnt *next;
+	XftFont* xfont;
+	FcPattern* pattern;
+	struct Fnt* next;
 } Fnt;
 
 enum { ColFg, ColBg, ColBorder }; /* Clr scheme index */
@@ -18,44 +18,44 @@ typedef XftColor Clr;
 
 typedef struct {
 	unsigned int w, h;
-	Display *dpy;
+	Display* dpy;
 	int screen;
 	Window root;
 	Drawable drawable;
 	GC gc;
-	Clr *scheme;
-	Fnt *fonts;
+	Clr* scheme;
+	Fnt* fonts;
 } Drw;
 
 /* Drawable abstraction */
-Drw *drw_create(Display *dpy, int screen, Window win, unsigned int w, unsigned int h);
-void drw_resize(Drw *drw, unsigned int w, unsigned int h);
-void drw_free(Drw *drw);
+Drw* drwCreate(Display* dpy, int screen, Window win, unsigned int w, unsigned int h);
+void drwResize(Drw* drw, unsigned int w, unsigned int h);
+void drwFree(Drw* drw);
 
 /* Fnt abstraction */
-Fnt *drw_fontset_create(Drw* drw, const char *fonts[], size_t fontcount);
-void drw_fontset_free(Fnt* set);
-unsigned int drw_fontset_getwidth(Drw *drw, const char *text);
-unsigned int drw_fontset_getwidth_clamp(Drw *drw, const char *text, unsigned int n);
-void drw_font_getexts(Fnt *font, const char *text, unsigned int len, unsigned int *w, unsigned int *h);
+Fnt* drwFontsetCreate(Drw* drw, const char* fonts[], size_t fontcount);
+void drwFontsetFree(Fnt* set);
+unsigned int drwFontsetGetwidth(Drw* drw, const char* text);
+unsigned int drwFontsetGetwidthClamp(Drw* drw, const char* text, unsigned int n);
+void drwFontGetexts(Fnt* font, const char* text, unsigned int len, unsigned int* w, unsigned int* h);
 
 /* Colorscheme abstraction */
-void drw_clr_create(Drw *drw, Clr *dest, const char *clrname);
-void drw_clr_free(Drw *drw, Clr *c);
-Clr *drw_scm_create(Drw *drw, const char *clrnames[], size_t clrcount);
-void drw_scm_free(Drw *drw, Clr *scm, size_t clrcount);
+void drwClrCreate(Drw* drw, Clr* dest, const char* clrname);
+void drwClrFree(Drw* drw, Clr* c);
+Clr* drwScmCreate(Drw* drw, const char* clrnames[], size_t clrcount);
+void drwScmFree(Drw* drw, Clr* scm, size_t clrcount);
 
 /* Cursor abstraction */
-Cur *drw_cur_create(Drw *drw, int shape);
-void drw_cur_free(Drw *drw, Cur *cursor);
+Cur* drwCurCreate(Drw* drw, int shape);
+void drwCurFree(Drw* drw, Cur* cursor);
 
 /* Drawing context manipulation */
-void drw_setfontset(Drw *drw, Fnt *set);
-void drw_setscheme(Drw *drw, Clr *scm);
+void drwSetfontset(Drw* drw, Fnt* set);
+void drwSetscheme(Drw* drw, Clr* scm);
 
 /* Drawing functions */
-void drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int invert);
-int drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lpad, const char *text, int invert);
+void drwRect(Drw* drw, int x, int y, unsigned int w, unsigned int h, int filled, int invert);
+int drwText(Drw* drw, int x, int y, unsigned int w, unsigned int h, unsigned int lpad, const char* text, int invert);
 
 /* Map functions */
-void drw_map(Drw *drw, Window win, int x, int y, unsigned int w, unsigned int h);
+void drwMap(Drw* drw, Window win, int x, int y, unsigned int w, unsigned int h);

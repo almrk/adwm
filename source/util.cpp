@@ -9,10 +9,10 @@
 void die(const char* fmt, ...) {
 	int savedErrno{ errno };
 
-    std::va_list ap;
-    std::va_start(ap, fmt);
+    va_list ap;
+    va_start(ap, fmt);
     std::vfprintf(stderr, fmt, ap);
-    std::va_end(ap);
+    va_end(ap);
 
 	if (fmt[0] && fmt[strlen(fmt)-1] == ':')
 		std::fprintf(stderr, " %s", strerror(savedErrno));
